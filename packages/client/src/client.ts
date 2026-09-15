@@ -2,7 +2,10 @@ import { parseChallenge, serializeCredentials, toStroops } from "@pulsar/core";
 import { PulsarRefusalError } from "./errors.js";
 import { createStellarSubmitter, type PaymentSubmitter } from "./submit.js";
 
-export type FetchLike = (input: string | URL | Request, init?: RequestInit) => Promise<Response>;
+export type FetchLike = (
+  input: string | URL | Request,
+  init?: RequestInit,
+) => Promise<Response>;
 
 export interface PulsarClientOptions {
   // Signing secret (S...). Required unless a submitter is injected.
@@ -23,7 +26,10 @@ export interface PulsarClient extends FetchLike {
 }
 
 function hostOf(input: string | URL | Request): string {
-  const raw = typeof input === "string" || input instanceof URL ? String(input) : input.url;
+  const raw =
+    typeof input === "string" || input instanceof URL
+      ? String(input)
+      : input.url;
   return new URL(raw).hostname;
 }
 
@@ -33,7 +39,9 @@ export function createPulsarClient(options: PulsarClientOptions): PulsarClient {
     options.submitter ??
     (() => {
       if (!options.secret) {
-        throw new Error("createPulsarClient needs a secret or an injected submitter");
+        throw new Error(
+          "createPulsarClient needs a secret or an injected submitter",
+        );
       }
       return createStellarSubmitter({
         secret: options.secret,
@@ -95,7 +103,10 @@ export function createPulsarClient(options: PulsarClientOptions): PulsarClient {
     spent += amountStroops;
 
     const headers = new Headers(init?.headers);
-    headers.set("Authorization", serializeCredentials({ tx, nonce: requirement.nonce }));
+    headers.set(
+      "Authorization",
+      serializeCredentials({ tx, nonce: requirement.nonce }),
+    );
     return doFetch(input, { ...init, headers });
   }) as PulsarClient;
 

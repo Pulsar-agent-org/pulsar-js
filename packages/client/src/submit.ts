@@ -36,8 +36,11 @@ export interface StellarSubmitterOptions {
 }
 
 // Testnet-only submitter backed by @stellar/stellar-sdk.
-export function createStellarSubmitter(options: StellarSubmitterOptions): PaymentSubmitter {
-  const horizonUrl = options.horizonUrl ?? "https://horizon-testnet.stellar.org";
+export function createStellarSubmitter(
+  options: StellarSubmitterOptions,
+): PaymentSubmitter {
+  const horizonUrl =
+    options.horizonUrl ?? "https://horizon-testnet.stellar.org";
   const passphrase = options.networkPassphrase ?? Networks.TESTNET;
   const server = new Horizon.Server(horizonUrl);
   const keypair = Keypair.fromSecret(options.secret);

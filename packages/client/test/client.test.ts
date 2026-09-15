@@ -5,7 +5,8 @@ import { PulsarRefusalError } from "../src/errors.js";
 import type { PaymentSubmitter } from "../src/submit.js";
 
 const PAY_TO = "GD4RJ43KGBZ3FNV4LCWZGYNPJQZPITK37QJYRCTF62LPY5S4LRETDAZW";
-const NONCE = "90aa9a441c48f8a68be1686f3ff7da1184bf7eaf9f721a0c0b675a0a33109225";
+const NONCE =
+  "90aa9a441c48f8a68be1686f3ff7da1184bf7eaf9f721a0c0b675a0a33109225";
 
 function countingSubmitter(): PaymentSubmitter & { calls: number } {
   const s = {
@@ -21,9 +22,13 @@ function countingSubmitter(): PaymentSubmitter & { calls: number } {
 // A fetch stub: an unpaid request gets a 402 challenge, a request that carries
 // an Authorization header gets 200.
 function stubFetch(amount: string) {
-  return async (_input: string | URL | Request, init?: RequestInit): Promise<Response> => {
+  return async (
+    _input: string | URL | Request,
+    init?: RequestInit,
+  ): Promise<Response> => {
     const auth = new Headers(init?.headers).get("Authorization");
-    if (auth) return new Response(JSON.stringify({ paid: true }), { status: 200 });
+    if (auth)
+      return new Response(JSON.stringify({ paid: true }), { status: 200 });
     const challenge = serializeChallenge({
       network: "stellar:testnet",
       asset: "XLM",

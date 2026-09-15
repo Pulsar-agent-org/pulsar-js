@@ -8,7 +8,12 @@ export class PulsarRefusalError extends Error {
   readonly host: string;
   readonly amount: string;
 
-  constructor(code: RefusalCode, message: string, host: string, amount: string) {
+  constructor(
+    code: RefusalCode,
+    message: string,
+    host: string,
+    amount: string,
+  ) {
     super(message);
     this.name = "PulsarRefusalError";
     this.code = code;

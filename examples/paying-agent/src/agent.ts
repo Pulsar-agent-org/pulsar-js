@@ -5,7 +5,8 @@ import { Client } from "@modelcontextprotocol/sdk/client/index.js";
 import { StdioClientTransport } from "@modelcontextprotocol/sdk/client/stdio.js";
 import { createStellarSubmitter } from "@pulsar/client";
 
-const HORIZON = process.env.HORIZON_URL ?? "https://horizon-testnet.stellar.org";
+const HORIZON =
+  process.env.HORIZON_URL ?? "https://horizon-testnet.stellar.org";
 const ASSET = process.env.PULSAR_ASSET ?? "XLM";
 const horizon = new Horizon.Server(HORIZON);
 
@@ -25,7 +26,10 @@ async function exists(pubkey: string): Promise<boolean> {
 
 // Resolve a keypair from a provided secret, or create and fund a fresh Testnet
 // account so the demo runs with no configuration.
-async function resolveAccount(secret: string | undefined, label: string): Promise<Keypair> {
+async function resolveAccount(
+  secret: string | undefined,
+  label: string,
+): Promise<Keypair> {
   const kp = secret ? Keypair.fromSecret(secret) : Keypair.random();
   if (!(await exists(kp.publicKey()))) {
     console.log(`funding ${label} account ${kp.publicKey()} via friendbot`);
@@ -37,10 +41,15 @@ async function resolveAccount(secret: string | undefined, label: string): Promis
 }
 
 async function main(): Promise<void> {
-  const client = await resolveAccount(process.env.PULSAR_CLIENT_SECRET, "client");
+  const client = await resolveAccount(
+    process.env.PULSAR_CLIENT_SECRET,
+    "client",
+  );
   const provider = await resolveAccount(undefined, "provider (pay_to)");
 
-  const serverPath = fileURLToPath(new URL("../../paid-mcp-tool/src/server.ts", import.meta.url));
+  const serverPath = fileURLToPath(
+    new URL("../../paid-mcp-tool/src/server.ts", import.meta.url),
+  );
   const transport = new StdioClientTransport({
     command: process.execPath,
     args: ["--import", "tsx", serverPath],
@@ -56,15 +65,22 @@ async function main(): Promise<void> {
   await mcp.connect(transport);
 
   const text = "Pulsar settles a single paid tool call as one Stellar payment.";
-  const submitter = createStellarSubmitter({ secret: client.secret(), horizonUrl: HORIZON });
+  const submitter = createStellarSubmitter({
+    secret: client.secret(),
+    horizonUrl: HORIZON,
+  });
 
   // First call: no proof. The server answers with a structured challenge.
-  const challenge = (await mcp.callTool({ name: "summarize", arguments: { text } })) as {
+  const challenge = (await mcp.callTool({
+    name: "summarize",
+    arguments: { text },
+  })) as {
     isError?: boolean;
     structuredContent?: { pulsar?: { requirement?: Record<string, string> } };
   };
   const requirement = challenge.structuredContent?.pulsar?.requirement;
-  if (!requirement) throw new Error("expected a Pulsar challenge on the first call");
+  if (!requirement)
+    throw new Error("expected a Pulsar challenge on the first call");
   console.log(`price discovered: ${requirement.amount} ${requirement.asset}`);
 
   const { tx } = await submitter.submit({

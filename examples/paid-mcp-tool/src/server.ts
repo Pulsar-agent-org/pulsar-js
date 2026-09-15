@@ -8,10 +8,13 @@ import { InMemoryNonceStore, createHorizonVerifier } from "@pulsar/server";
 // never write anything else there. Diagnostics go to stderr.
 const payTo = process.env.PULSAR_PAY_TO;
 if (!payTo) {
-  process.stderr.write("PULSAR_PAY_TO is required (a funded Testnet G... account)\n");
+  process.stderr.write(
+    "PULSAR_PAY_TO is required (a funded Testnet G... account)\n",
+  );
   process.exit(1);
 }
-const horizon = process.env.HORIZON_URL ?? "https://horizon-testnet.stellar.org";
+const horizon =
+  process.env.HORIZON_URL ?? "https://horizon-testnet.stellar.org";
 const asset = process.env.PULSAR_ASSET ?? "XLM";
 
 const server = new McpServer({ name: "pulsar-paid-tools", version: "0.1.0" });
@@ -33,7 +36,9 @@ paid.registerTool(
   async (args) => {
     const text = String(args.text ?? "");
     const words = text.trim() ? text.trim().split(/\s+/).length : 0;
-    return { content: [{ type: "text", text: `words=${words} chars=${text.length}` }] };
+    return {
+      content: [{ type: "text", text: `words=${words} chars=${text.length}` }],
+    };
   },
 );
 

@@ -1,5 +1,9 @@
 import { describe, it, expect, afterEach } from "vitest";
-import { nonceMemoBase64, verifyPayment, type ResolvedTransaction } from "@pulsar/core";
+import {
+  nonceMemoBase64,
+  verifyPayment,
+  type ResolvedTransaction,
+} from "@pulsar/core";
 import { InMemoryNonceStore, type Verifier } from "@pulsar/server";
 import { guardToolCall } from "../src/guard.js";
 import type { PulsarMcpOptions } from "../src/types.js";
@@ -9,7 +13,10 @@ const PAY_TO = "GD4RJ43KGBZ3FNV4LCWZGYNPJQZPITK37QJYRCTF62LPY5S4LRETDAZW";
 function mockVerifier(txMap: Map<string, ResolvedTransaction>): Verifier {
   return {
     async verify(input) {
-      return verifyPayment({ ...input, transaction: txMap.get(input.proof.tx) ?? null });
+      return verifyPayment({
+        ...input,
+        transaction: txMap.get(input.proof.tx) ?? null,
+      });
     },
   };
 }
@@ -19,7 +26,9 @@ afterEach(() => {
   for (const s of stores.splice(0)) s.close();
 });
 
-function makeOptions(txMap: Map<string, ResolvedTransaction>): PulsarMcpOptions {
+function makeOptions(
+  txMap: Map<string, ResolvedTransaction>,
+): PulsarMcpOptions {
   const nonceStore = new InMemoryNonceStore({ sweepMs: 0 });
   stores.push(nonceStore);
   return {
@@ -58,10 +67,15 @@ describe("guardToolCall", () => {
       successful: true,
       memoType: "hash",
       memo: nonceMemoBase64(nonce),
-      operations: [{ type: "payment", destination: PAY_TO, asset: "XLM", amount: "0.002" }],
+      operations: [
+        { type: "payment", destination: PAY_TO, asset: "XLM", amount: "0.002" },
+      ],
     });
 
-    const g = await guardToolCall(options, "summarize", { text: "hi", _pulsar: { tx, nonce } });
+    const g = await guardToolCall(options, "summarize", {
+      text: "hi",
+      _pulsar: { tx, nonce },
+    });
     expect(g.proceed).toBe(true);
     if (!g.proceed) return;
     expect(g.args).toEqual({ text: "hi" });
@@ -78,15 +92,23 @@ describe("guardToolCall", () => {
       successful: true,
       memoType: "hash",
       memo: nonceMemoBase64(nonce),
-      operations: [{ type: "payment", destination: PAY_TO, asset: "XLM", amount: "0.002" }],
+      operations: [
+        { type: "payment", destination: PAY_TO, asset: "XLM", amount: "0.002" },
+      ],
     });
 
-    const first = await guardToolCall(options, "summarize", { _pulsar: { tx, nonce } });
+    const first = await guardToolCall(options, "summarize", {
+      _pulsar: { tx, nonce },
+    });
     expect(first.proceed).toBe(true);
-    const second = await guardToolCall(options, "summarize", { _pulsar: { tx, nonce } });
+    const second = await guardToolCall(options, "summarize", {
+      _pulsar: { tx, nonce },
+    });
     expect(second.proceed).toBe(false);
     if (second.proceed) return;
-    expect(second.result.structuredContent!.pulsar).toMatchObject({ error: "nonce_used" });
+    expect(second.result.structuredContent!.pulsar).toMatchObject({
+      error: "nonce_used",
+    });
   });
 
   it("lets a tool with no price run free", async () => {

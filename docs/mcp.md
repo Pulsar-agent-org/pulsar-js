@@ -14,10 +14,7 @@ behaves like the SDK's, but charges for the tools you price.
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { z } from "zod";
 import { withPulsar } from "@pulsar/mcp";
-import {
-  InMemoryNonceStore,
-  createHorizonVerifier,
-} from "@pulsar/server";
+import { InMemoryNonceStore, createHorizonVerifier } from "@pulsar/server";
 
 const server = new McpServer({ name: "paid-tools", version: "0.1.0" });
 
@@ -33,7 +30,9 @@ paid.registerTool(
   "summarize",
   { description: "Summarize text", inputSchema: { text: z.string() } },
   async ({ text }) => ({
-    content: [{ type: "text", text: `Summary of ${String(text).length} chars` }],
+    content: [
+      { type: "text", text: `Summary of ${String(text).length} chars` },
+    ],
   }),
 );
 ```

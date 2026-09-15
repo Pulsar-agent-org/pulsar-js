@@ -6,7 +6,12 @@ import {
   type PaymentRequirement,
   type Verdict,
 } from "@pulsar/core";
-import type { PaywallOptions, PaywallRequest, PaywallResult, StoredNonce } from "./types.js";
+import type {
+  PaywallOptions,
+  PaywallRequest,
+  PaywallResult,
+  StoredNonce,
+} from "./types.js";
 
 const DEFAULT_TTL = 300;
 
@@ -14,7 +19,8 @@ const DEFAULT_TTL = 300;
 const RECHALLENGE = new Set<Verdict>(["unknown_nonce", "nonce_expired"]);
 
 function priceFor(options: PaywallOptions, req: PaywallRequest): string {
-  const raw = typeof options.price === "function" ? options.price(req) : options.price;
+  const raw =
+    typeof options.price === "function" ? options.price(req) : options.price;
   return canonicalAmount(raw);
 }
 
@@ -56,7 +62,10 @@ async function issueChallenge(
       "WWW-Authenticate": serializeChallenge(challengeParams),
       "Content-Type": "application/json",
     },
-    body: { error: error ?? "payment_required", message: messageFor(error ?? "payment_required") },
+    body: {
+      error: error ?? "payment_required",
+      message: messageFor(error ?? "payment_required"),
+    },
   };
 }
 
@@ -96,7 +105,10 @@ export async function paywall(
       kind: "respond",
       status: 400,
       headers: { "Content-Type": "application/json" },
-      body: { error: "malformed_request", message: messageFor("malformed_request") },
+      body: {
+        error: "malformed_request",
+        message: messageFor("malformed_request"),
+      },
     };
   }
 

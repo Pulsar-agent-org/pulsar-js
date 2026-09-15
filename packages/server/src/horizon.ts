@@ -1,5 +1,9 @@
 import { Horizon } from "@stellar/stellar-sdk";
-import { verifyPayment, type ResolvedTransaction, type HorizonClient } from "@pulsar/core";
+import {
+  verifyPayment,
+  type ResolvedTransaction,
+  type HorizonClient,
+} from "@pulsar/core";
 import type { Verifier } from "./types.js";
 
 function assetString(op: {
@@ -19,7 +23,11 @@ export function createHorizonClient(horizonUrl: string): HorizonClient {
     async getTransaction(hash: string): Promise<ResolvedTransaction | null> {
       try {
         const tx = await server.transactions().transaction(hash).call();
-        const opsPage = await server.operations().forTransaction(hash).limit(200).call();
+        const opsPage = await server
+          .operations()
+          .forTransaction(hash)
+          .limit(200)
+          .call();
         const operations = opsPage.records
           .filter((op) => op.type === "payment")
           .map((op) => {
@@ -47,9 +55,16 @@ export function createHorizonClient(horizonUrl: string): HorizonClient {
         };
       } catch (err: unknown) {
         // A 404 means the transaction is not yet included on the network.
-        const status = (err as { response?: { status?: number } })?.response?.status;
+        const status = (err as { response?: { status?: number } })?.response
+          ?.status;
         if (status === 404) {
-          return { found: false, successful: false, memoType: "none", memo: "", operations: [] };
+          return {
+            found: false,
+            successful: false,
+            memoType: "none",
+            memo: "",
+            operations: [],
+          };
         }
         throw err;
       }

@@ -19,7 +19,14 @@ const CHALLENGE_ORDER = [
   "expires",
   "error",
 ] as const;
-const CHALLENGE_REQUIRED = ["network", "asset", "amount", "pay_to", "nonce", "expires"];
+const CHALLENGE_REQUIRED = [
+  "network",
+  "asset",
+  "amount",
+  "pay_to",
+  "nonce",
+  "expires",
+];
 const CREDENTIAL_ORDER = ["tx", "nonce"] as const;
 
 export type HeaderKind = "challenge" | "credentials";
@@ -71,13 +78,16 @@ function validate(kind: HeaderKind, params: Record<string, string>): boolean {
     if (!ASSET.test(params.asset!)) return false;
     if (!AMOUNT.test(params.amount!)) return false;
     if (!ACCOUNT.test(params.pay_to!)) return false;
-    if (!NONCE.test(params.nonce!) || params.nonce!.length % 2 !== 0) return false;
+    if (!NONCE.test(params.nonce!) || params.nonce!.length % 2 !== 0)
+      return false;
     if (!EXPIRES.test(params.expires!)) return false;
-    if (params.error !== undefined && !ERROR_CODES.has(params.error)) return false;
+    if (params.error !== undefined && !ERROR_CODES.has(params.error))
+      return false;
   } else {
     if (params.tx === undefined || params.nonce === undefined) return false;
     if (!TX.test(params.tx)) return false;
-    if (!NONCE.test(params.nonce) || params.nonce.length % 2 !== 0) return false;
+    if (!NONCE.test(params.nonce) || params.nonce.length % 2 !== 0)
+      return false;
   }
   return true;
 }

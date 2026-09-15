@@ -6,5 +6,10 @@ export default defineConfig({
   dts: true,
   clean: true,
   target: "node20",
-  external: ["@pulsar/core", "@pulsar/server", "@modelcontextprotocol/sdk", "zod"],
+  external: [
+    "@pulsar/core",
+    "@pulsar/server",
+    "@modelcontextprotocol/sdk",
+    "zod",
+  ],
 });

@@ -12,7 +12,8 @@ import {
   type ResolvedTransaction,
 } from "../src/index.js";
 
-export type Kind = "header-serialize" | "header-parse" | "nonce-validate" | "verify";
+export type Kind =
+  "header-serialize" | "header-parse" | "nonce-validate" | "verify";
 
 function toRequirement(r: any): PaymentRequirement {
   return {

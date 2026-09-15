@@ -7,7 +7,11 @@ import {
   type Verdict,
 } from "@pulsar/core";
 import type { StoredNonce } from "@pulsar/server";
-import type { PulsarMcpOptions, PulsarProof, PulsarToolResult } from "./types.js";
+import type {
+  PulsarMcpOptions,
+  PulsarProof,
+  PulsarToolResult,
+} from "./types.js";
 
 const TX = /^[0-9a-f]{64}$/;
 const DEFAULT_TTL = 300;
@@ -58,7 +62,12 @@ async function issueChallenge(
   };
   return {
     isError: true,
-    content: [{ type: "text", text: `Pulsar payment required: ${JSON.stringify(pulsar)}` }],
+    content: [
+      {
+        type: "text",
+        text: `Pulsar payment required: ${JSON.stringify(pulsar)}`,
+      },
+    ],
     structuredContent: { pulsar },
   };
 }
@@ -89,9 +98,16 @@ export async function guardToolCall(
   const proof = args._pulsar as PulsarProof | undefined;
 
   if (!proof) {
-    return { proceed: false, result: await issueChallenge(options, amount, now, "payment_required") };
+    return {
+      proceed: false,
+      result: await issueChallenge(options, amount, now, "payment_required"),
+    };
   }
-  if (typeof proof.tx !== "string" || !TX.test(proof.tx) || !isValidNonce(proof.nonce)) {
+  if (
+    typeof proof.tx !== "string" ||
+    !TX.test(proof.tx) ||
+    !isValidNonce(proof.nonce)
+  ) {
     return { proceed: false, result: errorResult("malformed_request") };
   }
 
@@ -133,7 +149,10 @@ export async function guardToolCall(
     return { proceed: true, args: rest };
   }
   if (RECHALLENGE.has(final)) {
-    return { proceed: false, result: await issueChallenge(options, amount, now, final) };
+    return {
+      proceed: false,
+      result: await issueChallenge(options, amount, now, final),
+    };
   }
   return { proceed: false, result: errorResult(final) };
 }

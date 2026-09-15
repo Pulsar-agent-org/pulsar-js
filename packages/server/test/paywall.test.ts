@@ -19,12 +19,20 @@ const PAY_TO = "GD4RJ43KGBZ3FNV4LCWZGYNPJQZPITK37QJYRCTF62LPY5S4LRETDAZW";
 function mockVerifier(txMap: Map<string, ResolvedTransaction>): Verifier {
   return {
     async verify(input) {
-      return verifyPayment({ ...input, transaction: txMap.get(input.proof.tx) ?? null });
+      return verifyPayment({
+        ...input,
+        transaction: txMap.get(input.proof.tx) ?? null,
+      });
     },
   };
 }
 
-function paymentTx(nonce: string, asset: string, amount: string, to = PAY_TO): ResolvedTransaction {
+function paymentTx(
+  nonce: string,
+  asset: string,
+  amount: string,
+  to = PAY_TO,
+): ResolvedTransaction {
   return {
     found: true,
     successful: true,
@@ -39,7 +47,12 @@ afterEach(() => {
   for (const s of stores.splice(0)) s.close();
 });
 
-function makeApp(overrides: { clock?: () => number; txMap?: Map<string, ResolvedTransaction> } = {}) {
+function makeApp(
+  overrides: {
+    clock?: () => number;
+    txMap?: Map<string, ResolvedTransaction>;
+  } = {},
+) {
   const nonceStore = new InMemoryNonceStore({ sweepMs: 0 });
   stores.push(nonceStore);
   const txMap = overrides.txMap ?? new Map<string, ResolvedTransaction>();
@@ -142,7 +155,9 @@ describe("paywall over Express", () => {
 
   it("rejects a malformed Authorization header with 400", async () => {
     const { app } = makeApp();
-    const res = await request(app).get("/paid").set("Authorization", "Basic zzz");
+    const res = await request(app)
+      .get("/paid")
+      .set("Authorization", "Basic zzz");
     expect(res.status).toBe(400);
     expect(res.body.error).toBe("malformed_request");
   });

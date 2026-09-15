@@ -29,10 +29,19 @@ export function withPulsar(server: McpServer, options: PulsarMcpOptions) {
   return {
     server,
     registerTool(name: string, config: PaidToolConfig, handler: ToolHandler) {
-      const inputSchema: ZodRawShape = { ...(config.inputSchema ?? {}), ...PROOF_SHAPE };
+      const inputSchema: ZodRawShape = {
+        ...(config.inputSchema ?? {}),
+        ...PROOF_SHAPE,
+      };
       // The SDK's registerTool generics are keyed on the schema shape; the guard
       // works on plain objects, so we bridge with a loose handler here.
-      (server.registerTool as unknown as (n: string, c: unknown, cb: unknown) => unknown)(
+      (
+        server.registerTool as unknown as (
+          n: string,
+          c: unknown,
+          cb: unknown,
+        ) => unknown
+      )(
         name,
         { ...config, inputSchema },
         async (args: Record<string, unknown>, extra: unknown) => {
