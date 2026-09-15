@@ -1,0 +1,36 @@
+{
+  "name": "@pulsar/mcp",
+  "version": "0.1.0-rc.1",
+  "description": "Pulsar payments for Model Context Protocol tools",
+  "license": "Apache-2.0",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": { "types": "./dist/index.d.ts", "import": "./dist/index.js" }
+  },
+  "files": ["dist"],
+  "engines": { "node": ">=20" },
+  "scripts": {
+    "build": "tsup",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "@pulsar/core": "workspace:*",
+    "@pulsar/server": "workspace:*"
+  },
+  "peerDependencies": {
+    "@modelcontextprotocol/sdk": "^1.0.0",
+    "zod": "^3.23.0"
+  },
+  "devDependencies": {
+    "@modelcontextprotocol/sdk": "^1.0.0",
+    "zod": "^3.23.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Pulsar-agent-org/pulsar-js.git",
+    "directory": "packages/mcp"
+  },
+  "publishConfig": { "access": "public" }
+}
