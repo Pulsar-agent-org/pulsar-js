@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Security vulnerability
+    url: https://github.com/Pulsar-agent-org/pulsar-js/security/advisories/new
+    about: Report a vulnerability privately. Never open a public issue for one.
+  - name: Design discussion
+    url: https://github.com/Pulsar-agent-org/pulsar-js/discussions
+    about: Propose or discuss a design before opening an issue.

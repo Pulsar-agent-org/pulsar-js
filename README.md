@@ -6,12 +6,18 @@ server answers an unpaid request with `402 Payment Required` and a challenge; a
 client pays a few tenths of a cent on Stellar and retries with a proof of
 payment.
 
-This repository publishes four packages from one release cycle. It implements
+This repository holds four packages built from one release cycle. It implements
 the protocol specified in
 [pulsar-spec](https://github.com/Pulsar-agent-org/pulsar-spec) and depends on it;
 the dependency never runs the other way.
 
     pulsar-spec  ->  pulsar-js  ->  pulsar-facilitator
+
+## Status
+
+Early and pre-release. Testnet only. Unaudited. The packages build, the tests and
+the conformance suite pass, and the Testnet demo runs, but the packages are not
+yet published to npm and nothing here is ready for real value.
 
 ## Packages
 
@@ -93,4 +99,5 @@ The agent creates and funds fresh Testnet accounts, starts a paid MCP tool, pays
 
 ## Versions and license
 
-All four packages are published at `0.1.0-rc.1`. Apache-2.0. See `LICENSE`.
+All four packages are versioned at `0.1.0-rc.1` and are not yet published to npm.
+Apache-2.0. See `LICENSE`.
