@@ -1,0 +1,46 @@
+{
+  "name": "@pulsar/server",
+  "version": "0.1.0-rc.1",
+  "description": "Framework-agnostic Pulsar paywall with Express, Hono, and Next.js adapters",
+  "license": "Apache-2.0",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": { "types": "./dist/index.d.ts", "import": "./dist/index.js" },
+    "./express": { "types": "./dist/express.d.ts", "import": "./dist/express.js" },
+    "./hono": { "types": "./dist/hono.d.ts", "import": "./dist/hono.js" },
+    "./next": { "types": "./dist/next.d.ts", "import": "./dist/next.js" }
+  },
+  "files": ["dist"],
+  "engines": { "node": ">=20" },
+  "scripts": {
+    "build": "tsup",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "@pulsar/core": "workspace:*",
+    "@stellar/stellar-sdk": "^13.0.0"
+  },
+  "peerDependencies": {
+    "express": "^4.19.0",
+    "hono": "^4.5.0"
+  },
+  "peerDependenciesMeta": {
+    "express": { "optional": true },
+    "hono": { "optional": true }
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.21",
+    "@types/supertest": "^6.0.2",
+    "express": "^4.19.2",
+    "hono": "^4.5.0",
+    "supertest": "^7.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Pulsar-agent-org/pulsar-js.git",
+    "directory": "packages/server"
+  },
+  "publishConfig": { "access": "public" }
+}
