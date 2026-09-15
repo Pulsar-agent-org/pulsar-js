@@ -1,0 +1,32 @@
+name: ci
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 9
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm build
+      - run: pnpm test
+      - run: pnpm lint
+      - run: pnpm typecheck
+      - name: Forbid attribution and emoji artifacts
+        run: |
+          robot=$'\U0001F916'
+          pat="co-authored""-by|claude"" code|generated"" with|$robot"
+          if grep -rniE "$pat" . --exclude-dir=node_modules --exclude-dir=.git --exclude-dir=dist; then
+            echo "forbidden marker found"
+            exit 1
+          fi
