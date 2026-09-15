@@ -1,0 +1,111 @@
+{
+  "spec_version": "0.1.0",
+  "kind": "header-serialize",
+  "vectors": [
+    {
+      "id": "serialize-challenge-xlm",
+      "description": "Canonical challenge for a native XLM price.",
+      "input": {
+        "type": "challenge",
+        "params": {
+          "network": "stellar:testnet",
+          "asset": "XLM",
+          "amount": "0.002",
+          "pay_to": "GD4RJ43KGBZ3FNV4LCWZGYNPJQZPITK37QJYRCTF62LPY5S4LRETDAZW",
+          "nonce": "90aa9a441c48f8a68be1686f3ff7da1184bf7eaf9f721a0c0b675a0a33109225",
+          "expires": "1789431692"
+        }
+      },
+      "expect": {
+        "header": "Pulsar network=\"stellar:testnet\", asset=\"XLM\", amount=\"0.002\", pay_to=\"GD4RJ43KGBZ3FNV4LCWZGYNPJQZPITK37QJYRCTF62LPY5S4LRETDAZW\", nonce=\"90aa9a441c48f8a68be1686f3ff7da1184bf7eaf9f721a0c0b675a0a33109225\", expires=\"1789431692\""
+      }
+    },
+    {
+      "id": "serialize-challenge-usdc",
+      "description": "Canonical challenge for a USDC credit asset.",
+      "input": {
+        "type": "challenge",
+        "params": {
+          "network": "stellar:testnet",
+          "asset": "USDC:GBBD47IF6LWK7P7MDEVSCWR7DPUWV3NY3DTQEVFL4NAT4AQH3ZLLFLA5",
+          "amount": "0.002",
+          "pay_to": "GD4RJ43KGBZ3FNV4LCWZGYNPJQZPITK37QJYRCTF62LPY5S4LRETDAZW",
+          "nonce": "90aa9a441c48f8a68be1686f3ff7da1184bf7eaf9f721a0c0b675a0a33109225",
+          "expires": "1789431692"
+        }
+      },
+      "expect": {
+        "header": "Pulsar network=\"stellar:testnet\", asset=\"USDC:GBBD47IF6LWK7P7MDEVSCWR7DPUWV3NY3DTQEVFL4NAT4AQH3ZLLFLA5\", amount=\"0.002\", pay_to=\"GD4RJ43KGBZ3FNV4LCWZGYNPJQZPITK37QJYRCTF62LPY5S4LRETDAZW\", nonce=\"90aa9a441c48f8a68be1686f3ff7da1184bf7eaf9f721a0c0b675a0a33109225\", expires=\"1789431692\""
+      }
+    },
+    {
+      "id": "serialize-challenge-with-error",
+      "description": "Re-challenge carries an error parameter last.",
+      "input": {
+        "type": "challenge",
+        "params": {
+          "network": "stellar:testnet",
+          "asset": "XLM",
+          "amount": "0.002",
+          "pay_to": "GD4RJ43KGBZ3FNV4LCWZGYNPJQZPITK37QJYRCTF62LPY5S4LRETDAZW",
+          "nonce": "90aa9a441c48f8a68be1686f3ff7da1184bf7eaf9f721a0c0b675a0a33109225",
+          "expires": "1789431692",
+          "error": "nonce_expired"
+        }
+      },
+      "expect": {
+        "header": "Pulsar network=\"stellar:testnet\", asset=\"XLM\", amount=\"0.002\", pay_to=\"GD4RJ43KGBZ3FNV4LCWZGYNPJQZPITK37QJYRCTF62LPY5S4LRETDAZW\", nonce=\"90aa9a441c48f8a68be1686f3ff7da1184bf7eaf9f721a0c0b675a0a33109225\", expires=\"1789431692\", error=\"nonce_expired\""
+      }
+    },
+    {
+      "id": "serialize-amount-canonical-trailing-zeros",
+      "description": "Trailing fractional zeros are stripped in canonical form.",
+      "input": {
+        "type": "challenge",
+        "params": {
+          "network": "stellar:testnet",
+          "asset": "XLM",
+          "amount": "0.0020000",
+          "pay_to": "GD4RJ43KGBZ3FNV4LCWZGYNPJQZPITK37QJYRCTF62LPY5S4LRETDAZW",
+          "nonce": "90aa9a441c48f8a68be1686f3ff7da1184bf7eaf9f721a0c0b675a0a33109225",
+          "expires": "1789431692"
+        }
+      },
+      "expect": {
+        "header": "Pulsar network=\"stellar:testnet\", asset=\"XLM\", amount=\"0.002\", pay_to=\"GD4RJ43KGBZ3FNV4LCWZGYNPJQZPITK37QJYRCTF62LPY5S4LRETDAZW\", nonce=\"90aa9a441c48f8a68be1686f3ff7da1184bf7eaf9f721a0c0b675a0a33109225\", expires=\"1789431692\""
+      }
+    },
+    {
+      "id": "serialize-amount-canonical-whole",
+      "description": "A whole amount keeps no trailing dot or fraction.",
+      "input": {
+        "type": "challenge",
+        "params": {
+          "network": "stellar:testnet",
+          "asset": "XLM",
+          "amount": "1.0",
+          "pay_to": "GD4RJ43KGBZ3FNV4LCWZGYNPJQZPITK37QJYRCTF62LPY5S4LRETDAZW",
+          "nonce": "90aa9a441c48f8a68be1686f3ff7da1184bf7eaf9f721a0c0b675a0a33109225",
+          "expires": "1789431692"
+        }
+      },
+      "expect": {
+        "header": "Pulsar network=\"stellar:testnet\", asset=\"XLM\", amount=\"1\", pay_to=\"GD4RJ43KGBZ3FNV4LCWZGYNPJQZPITK37QJYRCTF62LPY5S4LRETDAZW\", nonce=\"90aa9a441c48f8a68be1686f3ff7da1184bf7eaf9f721a0c0b675a0a33109225\", expires=\"1789431692\""
+      }
+    },
+    {
+      "id": "serialize-credentials",
+      "description": "Canonical proof header value.",
+      "input": {
+        "type": "credentials",
+        "params": {
+          "tx": "d2fbddbda7e4236db8f0b85855c0fcc81f6c215dbe594f8bf6736341c032400d",
+          "nonce": "90aa9a441c48f8a68be1686f3ff7da1184bf7eaf9f721a0c0b675a0a33109225"
+        }
+      },
+      "expect": {
+        "header": "Pulsar tx=\"d2fbddbda7e4236db8f0b85855c0fcc81f6c215dbe594f8bf6736341c032400d\", nonce=\"90aa9a441c48f8a68be1686f3ff7da1184bf7eaf9f721a0c0b675a0a33109225\""
+      }
+    }
+  ]
+}

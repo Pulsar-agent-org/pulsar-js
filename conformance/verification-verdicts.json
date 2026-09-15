@@ -1,0 +1,517 @@
+{
+  "spec_version": "0.1.0",
+  "kind": "verify",
+  "vectors": [
+    {
+      "id": "verify-valid-xlm",
+      "description": "Correct memo, destination, asset, and amount verify.",
+      "input": {
+        "requirement": {
+          "network": "stellar:testnet",
+          "asset": "XLM",
+          "amount": "0.002",
+          "pay_to": "GD4RJ43KGBZ3FNV4LCWZGYNPJQZPITK37QJYRCTF62LPY5S4LRETDAZW",
+          "nonce": "90aa9a441c48f8a68be1686f3ff7da1184bf7eaf9f721a0c0b675a0a33109225",
+          "expires": 1789431692
+        },
+        "proof": {
+          "tx": "d2fbddbda7e4236db8f0b85855c0fcc81f6c215dbe594f8bf6736341c032400d",
+          "nonce": "90aa9a441c48f8a68be1686f3ff7da1184bf7eaf9f721a0c0b675a0a33109225"
+        },
+        "now": 1789431600,
+        "nonce_record": { "used": false, "expires": 1789431692 },
+        "transaction": {
+          "found": true,
+          "successful": true,
+          "memo_type": "hash",
+          "memo": "rp+GgADAxVnuKspQ3iiwB51DnwPyYI19dwZT+0i+1cw=",
+          "operations": [
+            {
+              "type": "payment",
+              "destination": "GD4RJ43KGBZ3FNV4LCWZGYNPJQZPITK37QJYRCTF62LPY5S4LRETDAZW",
+              "asset": "XLM",
+              "amount": "0.002"
+            }
+          ]
+        }
+      },
+      "expect": { "verdict": "valid" }
+    },
+    {
+      "id": "verify-valid-usdc",
+      "description": "A USDC payment that matches the required credit asset verifies.",
+      "input": {
+        "requirement": {
+          "network": "stellar:testnet",
+          "asset": "USDC:GBBD47IF6LWK7P7MDEVSCWR7DPUWV3NY3DTQEVFL4NAT4AQH3ZLLFLA5",
+          "amount": "0.002",
+          "pay_to": "GD4RJ43KGBZ3FNV4LCWZGYNPJQZPITK37QJYRCTF62LPY5S4LRETDAZW",
+          "nonce": "90aa9a441c48f8a68be1686f3ff7da1184bf7eaf9f721a0c0b675a0a33109225",
+          "expires": 1789431692
+        },
+        "proof": {
+          "tx": "d2fbddbda7e4236db8f0b85855c0fcc81f6c215dbe594f8bf6736341c032400d",
+          "nonce": "90aa9a441c48f8a68be1686f3ff7da1184bf7eaf9f721a0c0b675a0a33109225"
+        },
+        "now": 1789431600,
+        "nonce_record": { "used": false, "expires": 1789431692 },
+        "transaction": {
+          "found": true,
+          "successful": true,
+          "memo_type": "hash",
+          "memo": "rp+GgADAxVnuKspQ3iiwB51DnwPyYI19dwZT+0i+1cw=",
+          "operations": [
+            {
+              "type": "payment",
+              "destination": "GD4RJ43KGBZ3FNV4LCWZGYNPJQZPITK37QJYRCTF62LPY5S4LRETDAZW",
+              "asset": "USDC:GBBD47IF6LWK7P7MDEVSCWR7DPUWV3NY3DTQEVFL4NAT4AQH3ZLLFLA5",
+              "amount": "0.002"
+            }
+          ]
+        }
+      },
+      "expect": { "verdict": "valid" }
+    },
+    {
+      "id": "verify-valid-two-ops-summed",
+      "description": "Two payments to pay_to in the required asset sum to the price.",
+      "input": {
+        "requirement": {
+          "network": "stellar:testnet",
+          "asset": "XLM",
+          "amount": "0.002",
+          "pay_to": "GD4RJ43KGBZ3FNV4LCWZGYNPJQZPITK37QJYRCTF62LPY5S4LRETDAZW",
+          "nonce": "90aa9a441c48f8a68be1686f3ff7da1184bf7eaf9f721a0c0b675a0a33109225",
+          "expires": 1789431692
+        },
+        "proof": {
+          "tx": "d2fbddbda7e4236db8f0b85855c0fcc81f6c215dbe594f8bf6736341c032400d",
+          "nonce": "90aa9a441c48f8a68be1686f3ff7da1184bf7eaf9f721a0c0b675a0a33109225"
+        },
+        "now": 1789431600,
+        "nonce_record": { "used": false, "expires": 1789431692 },
+        "transaction": {
+          "found": true,
+          "successful": true,
+          "memo_type": "hash",
+          "memo": "rp+GgADAxVnuKspQ3iiwB51DnwPyYI19dwZT+0i+1cw=",
+          "operations": [
+            {
+              "type": "payment",
+              "destination": "GD4RJ43KGBZ3FNV4LCWZGYNPJQZPITK37QJYRCTF62LPY5S4LRETDAZW",
+              "asset": "XLM",
+              "amount": "0.001"
+            },
+            {
+              "type": "payment",
+              "destination": "GD4RJ43KGBZ3FNV4LCWZGYNPJQZPITK37QJYRCTF62LPY5S4LRETDAZW",
+              "asset": "XLM",
+              "amount": "0.001"
+            }
+          ]
+        }
+      },
+      "expect": { "verdict": "valid" }
+    },
+    {
+      "id": "verify-malformed-uppercase-tx",
+      "description": "An uppercase transaction hash in the proof is malformed, before any chain check.",
+      "input": {
+        "requirement": {
+          "network": "stellar:testnet",
+          "asset": "XLM",
+          "amount": "0.002",
+          "pay_to": "GD4RJ43KGBZ3FNV4LCWZGYNPJQZPITK37QJYRCTF62LPY5S4LRETDAZW",
+          "nonce": "90aa9a441c48f8a68be1686f3ff7da1184bf7eaf9f721a0c0b675a0a33109225",
+          "expires": 1789431692
+        },
+        "proof": {
+          "tx": "D2FBDDBDA7E4236DB8F0B85855C0FCC81F6C215DBE594F8BF6736341C032400D",
+          "nonce": "90aa9a441c48f8a68be1686f3ff7da1184bf7eaf9f721a0c0b675a0a33109225"
+        },
+        "now": 1789431600,
+        "nonce_record": { "used": false, "expires": 1789431692 },
+        "transaction": {
+          "found": true,
+          "successful": true,
+          "memo_type": "hash",
+          "memo": "rp+GgADAxVnuKspQ3iiwB51DnwPyYI19dwZT+0i+1cw=",
+          "operations": [
+            {
+              "type": "payment",
+              "destination": "GD4RJ43KGBZ3FNV4LCWZGYNPJQZPITK37QJYRCTF62LPY5S4LRETDAZW",
+              "asset": "XLM",
+              "amount": "0.002"
+            }
+          ]
+        }
+      },
+      "expect": { "verdict": "malformed_request" }
+    },
+    {
+      "id": "verify-unknown-nonce",
+      "description": "No stored record for the proof nonce is unknown_nonce.",
+      "input": {
+        "requirement": {
+          "network": "stellar:testnet",
+          "asset": "XLM",
+          "amount": "0.002",
+          "pay_to": "GD4RJ43KGBZ3FNV4LCWZGYNPJQZPITK37QJYRCTF62LPY5S4LRETDAZW",
+          "nonce": "90aa9a441c48f8a68be1686f3ff7da1184bf7eaf9f721a0c0b675a0a33109225",
+          "expires": 1789431692
+        },
+        "proof": {
+          "tx": "d2fbddbda7e4236db8f0b85855c0fcc81f6c215dbe594f8bf6736341c032400d",
+          "nonce": "90aa9a441c48f8a68be1686f3ff7da1184bf7eaf9f721a0c0b675a0a33109225"
+        },
+        "now": 1789431600,
+        "nonce_record": null,
+        "transaction": {
+          "found": true,
+          "successful": true,
+          "memo_type": "hash",
+          "memo": "rp+GgADAxVnuKspQ3iiwB51DnwPyYI19dwZT+0i+1cw=",
+          "operations": [
+            {
+              "type": "payment",
+              "destination": "GD4RJ43KGBZ3FNV4LCWZGYNPJQZPITK37QJYRCTF62LPY5S4LRETDAZW",
+              "asset": "XLM",
+              "amount": "0.002"
+            }
+          ]
+        }
+      },
+      "expect": { "verdict": "unknown_nonce" }
+    },
+    {
+      "id": "verify-nonce-used",
+      "description": "A consumed nonce fails as used even with a good payment.",
+      "input": {
+        "requirement": {
+          "network": "stellar:testnet",
+          "asset": "XLM",
+          "amount": "0.002",
+          "pay_to": "GD4RJ43KGBZ3FNV4LCWZGYNPJQZPITK37QJYRCTF62LPY5S4LRETDAZW",
+          "nonce": "90aa9a441c48f8a68be1686f3ff7da1184bf7eaf9f721a0c0b675a0a33109225",
+          "expires": 1789431692
+        },
+        "proof": {
+          "tx": "d2fbddbda7e4236db8f0b85855c0fcc81f6c215dbe594f8bf6736341c032400d",
+          "nonce": "90aa9a441c48f8a68be1686f3ff7da1184bf7eaf9f721a0c0b675a0a33109225"
+        },
+        "now": 1789431600,
+        "nonce_record": { "used": true, "expires": 1789431692 },
+        "transaction": {
+          "found": true,
+          "successful": true,
+          "memo_type": "hash",
+          "memo": "rp+GgADAxVnuKspQ3iiwB51DnwPyYI19dwZT+0i+1cw=",
+          "operations": [
+            {
+              "type": "payment",
+              "destination": "GD4RJ43KGBZ3FNV4LCWZGYNPJQZPITK37QJYRCTF62LPY5S4LRETDAZW",
+              "asset": "XLM",
+              "amount": "0.002"
+            }
+          ]
+        }
+      },
+      "expect": { "verdict": "nonce_used" }
+    },
+    {
+      "id": "verify-nonce-expired",
+      "description": "Past expiry plus grace, verification fails as expired.",
+      "input": {
+        "requirement": {
+          "network": "stellar:testnet",
+          "asset": "XLM",
+          "amount": "0.002",
+          "pay_to": "GD4RJ43KGBZ3FNV4LCWZGYNPJQZPITK37QJYRCTF62LPY5S4LRETDAZW",
+          "nonce": "90aa9a441c48f8a68be1686f3ff7da1184bf7eaf9f721a0c0b675a0a33109225",
+          "expires": 1789431692
+        },
+        "proof": {
+          "tx": "d2fbddbda7e4236db8f0b85855c0fcc81f6c215dbe594f8bf6736341c032400d",
+          "nonce": "90aa9a441c48f8a68be1686f3ff7da1184bf7eaf9f721a0c0b675a0a33109225"
+        },
+        "now": 1789431700,
+        "nonce_record": { "used": false, "expires": 1789431692 },
+        "transaction": {
+          "found": true,
+          "successful": true,
+          "memo_type": "hash",
+          "memo": "rp+GgADAxVnuKspQ3iiwB51DnwPyYI19dwZT+0i+1cw=",
+          "operations": [
+            {
+              "type": "payment",
+              "destination": "GD4RJ43KGBZ3FNV4LCWZGYNPJQZPITK37QJYRCTF62LPY5S4LRETDAZW",
+              "asset": "XLM",
+              "amount": "0.002"
+            }
+          ]
+        }
+      },
+      "expect": { "verdict": "nonce_expired" }
+    },
+    {
+      "id": "verify-tx-not-found-null",
+      "description": "An unresolved transaction is tx_not_found.",
+      "input": {
+        "requirement": {
+          "network": "stellar:testnet",
+          "asset": "XLM",
+          "amount": "0.002",
+          "pay_to": "GD4RJ43KGBZ3FNV4LCWZGYNPJQZPITK37QJYRCTF62LPY5S4LRETDAZW",
+          "nonce": "90aa9a441c48f8a68be1686f3ff7da1184bf7eaf9f721a0c0b675a0a33109225",
+          "expires": 1789431692
+        },
+        "proof": {
+          "tx": "d2fbddbda7e4236db8f0b85855c0fcc81f6c215dbe594f8bf6736341c032400d",
+          "nonce": "90aa9a441c48f8a68be1686f3ff7da1184bf7eaf9f721a0c0b675a0a33109225"
+        },
+        "now": 1789431600,
+        "nonce_record": { "used": false, "expires": 1789431692 },
+        "transaction": null
+      },
+      "expect": { "verdict": "tx_not_found" }
+    },
+    {
+      "id": "verify-tx-not-found-flag",
+      "description": "A transaction marked not found is tx_not_found.",
+      "input": {
+        "requirement": {
+          "network": "stellar:testnet",
+          "asset": "XLM",
+          "amount": "0.002",
+          "pay_to": "GD4RJ43KGBZ3FNV4LCWZGYNPJQZPITK37QJYRCTF62LPY5S4LRETDAZW",
+          "nonce": "90aa9a441c48f8a68be1686f3ff7da1184bf7eaf9f721a0c0b675a0a33109225",
+          "expires": 1789431692
+        },
+        "proof": {
+          "tx": "d2fbddbda7e4236db8f0b85855c0fcc81f6c215dbe594f8bf6736341c032400d",
+          "nonce": "90aa9a441c48f8a68be1686f3ff7da1184bf7eaf9f721a0c0b675a0a33109225"
+        },
+        "now": 1789431600,
+        "nonce_record": { "used": false, "expires": 1789431692 },
+        "transaction": {
+          "found": false,
+          "successful": false,
+          "memo_type": "none",
+          "memo": "",
+          "operations": []
+        }
+      },
+      "expect": { "verdict": "tx_not_found" }
+    },
+    {
+      "id": "verify-tx-failed",
+      "description": "An included but unsuccessful transaction is tx_failed.",
+      "input": {
+        "requirement": {
+          "network": "stellar:testnet",
+          "asset": "XLM",
+          "amount": "0.002",
+          "pay_to": "GD4RJ43KGBZ3FNV4LCWZGYNPJQZPITK37QJYRCTF62LPY5S4LRETDAZW",
+          "nonce": "90aa9a441c48f8a68be1686f3ff7da1184bf7eaf9f721a0c0b675a0a33109225",
+          "expires": 1789431692
+        },
+        "proof": {
+          "tx": "d2fbddbda7e4236db8f0b85855c0fcc81f6c215dbe594f8bf6736341c032400d",
+          "nonce": "90aa9a441c48f8a68be1686f3ff7da1184bf7eaf9f721a0c0b675a0a33109225"
+        },
+        "now": 1789431600,
+        "nonce_record": { "used": false, "expires": 1789431692 },
+        "transaction": {
+          "found": true,
+          "successful": false,
+          "memo_type": "hash",
+          "memo": "rp+GgADAxVnuKspQ3iiwB51DnwPyYI19dwZT+0i+1cw=",
+          "operations": [
+            {
+              "type": "payment",
+              "destination": "GD4RJ43KGBZ3FNV4LCWZGYNPJQZPITK37QJYRCTF62LPY5S4LRETDAZW",
+              "asset": "XLM",
+              "amount": "0.002"
+            }
+          ]
+        }
+      },
+      "expect": { "verdict": "tx_failed" }
+    },
+    {
+      "id": "verify-memo-mismatch-wrong-hash",
+      "description": "A hash memo that is not SHA-256(nonce) fails.",
+      "input": {
+        "requirement": {
+          "network": "stellar:testnet",
+          "asset": "XLM",
+          "amount": "0.002",
+          "pay_to": "GD4RJ43KGBZ3FNV4LCWZGYNPJQZPITK37QJYRCTF62LPY5S4LRETDAZW",
+          "nonce": "90aa9a441c48f8a68be1686f3ff7da1184bf7eaf9f721a0c0b675a0a33109225",
+          "expires": 1789431692
+        },
+        "proof": {
+          "tx": "d2fbddbda7e4236db8f0b85855c0fcc81f6c215dbe594f8bf6736341c032400d",
+          "nonce": "90aa9a441c48f8a68be1686f3ff7da1184bf7eaf9f721a0c0b675a0a33109225"
+        },
+        "now": 1789431600,
+        "nonce_record": { "used": false, "expires": 1789431692 },
+        "transaction": {
+          "found": true,
+          "successful": true,
+          "memo_type": "hash",
+          "memo": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=",
+          "operations": [
+            {
+              "type": "payment",
+              "destination": "GD4RJ43KGBZ3FNV4LCWZGYNPJQZPITK37QJYRCTF62LPY5S4LRETDAZW",
+              "asset": "XLM",
+              "amount": "0.002"
+            }
+          ]
+        }
+      },
+      "expect": { "verdict": "memo_mismatch" }
+    },
+    {
+      "id": "verify-memo-mismatch-wrong-type",
+      "description": "A non-hash memo type fails.",
+      "input": {
+        "requirement": {
+          "network": "stellar:testnet",
+          "asset": "XLM",
+          "amount": "0.002",
+          "pay_to": "GD4RJ43KGBZ3FNV4LCWZGYNPJQZPITK37QJYRCTF62LPY5S4LRETDAZW",
+          "nonce": "90aa9a441c48f8a68be1686f3ff7da1184bf7eaf9f721a0c0b675a0a33109225",
+          "expires": 1789431692
+        },
+        "proof": {
+          "tx": "d2fbddbda7e4236db8f0b85855c0fcc81f6c215dbe594f8bf6736341c032400d",
+          "nonce": "90aa9a441c48f8a68be1686f3ff7da1184bf7eaf9f721a0c0b675a0a33109225"
+        },
+        "now": 1789431600,
+        "nonce_record": { "used": false, "expires": 1789431692 },
+        "transaction": {
+          "found": true,
+          "successful": true,
+          "memo_type": "text",
+          "memo": "90aa9a441c48f8a68be1686f3ff7da1184bf7eaf9f721a0c0b675a0a33109225",
+          "operations": [
+            {
+              "type": "payment",
+              "destination": "GD4RJ43KGBZ3FNV4LCWZGYNPJQZPITK37QJYRCTF62LPY5S4LRETDAZW",
+              "asset": "XLM",
+              "amount": "0.002"
+            }
+          ]
+        }
+      },
+      "expect": { "verdict": "memo_mismatch" }
+    },
+    {
+      "id": "verify-wrong-destination",
+      "description": "No payment to pay_to is wrong_destination.",
+      "input": {
+        "requirement": {
+          "network": "stellar:testnet",
+          "asset": "XLM",
+          "amount": "0.002",
+          "pay_to": "GD4RJ43KGBZ3FNV4LCWZGYNPJQZPITK37QJYRCTF62LPY5S4LRETDAZW",
+          "nonce": "90aa9a441c48f8a68be1686f3ff7da1184bf7eaf9f721a0c0b675a0a33109225",
+          "expires": 1789431692
+        },
+        "proof": {
+          "tx": "d2fbddbda7e4236db8f0b85855c0fcc81f6c215dbe594f8bf6736341c032400d",
+          "nonce": "90aa9a441c48f8a68be1686f3ff7da1184bf7eaf9f721a0c0b675a0a33109225"
+        },
+        "now": 1789431600,
+        "nonce_record": { "used": false, "expires": 1789431692 },
+        "transaction": {
+          "found": true,
+          "successful": true,
+          "memo_type": "hash",
+          "memo": "rp+GgADAxVnuKspQ3iiwB51DnwPyYI19dwZT+0i+1cw=",
+          "operations": [
+            {
+              "type": "payment",
+              "destination": "GC42P4IFEUITU5VPDLIIK5VFDOD4L5LQJTG6SM5FJSVS5JXRC4HXWM5D",
+              "asset": "XLM",
+              "amount": "0.002"
+            }
+          ]
+        }
+      },
+      "expect": { "verdict": "wrong_destination" }
+    },
+    {
+      "id": "verify-wrong-asset",
+      "description": "A payment to pay_to in the wrong asset is wrong_asset.",
+      "input": {
+        "requirement": {
+          "network": "stellar:testnet",
+          "asset": "XLM",
+          "amount": "0.002",
+          "pay_to": "GD4RJ43KGBZ3FNV4LCWZGYNPJQZPITK37QJYRCTF62LPY5S4LRETDAZW",
+          "nonce": "90aa9a441c48f8a68be1686f3ff7da1184bf7eaf9f721a0c0b675a0a33109225",
+          "expires": 1789431692
+        },
+        "proof": {
+          "tx": "d2fbddbda7e4236db8f0b85855c0fcc81f6c215dbe594f8bf6736341c032400d",
+          "nonce": "90aa9a441c48f8a68be1686f3ff7da1184bf7eaf9f721a0c0b675a0a33109225"
+        },
+        "now": 1789431600,
+        "nonce_record": { "used": false, "expires": 1789431692 },
+        "transaction": {
+          "found": true,
+          "successful": true,
+          "memo_type": "hash",
+          "memo": "rp+GgADAxVnuKspQ3iiwB51DnwPyYI19dwZT+0i+1cw=",
+          "operations": [
+            {
+              "type": "payment",
+              "destination": "GD4RJ43KGBZ3FNV4LCWZGYNPJQZPITK37QJYRCTF62LPY5S4LRETDAZW",
+              "asset": "USDC:GBBD47IF6LWK7P7MDEVSCWR7DPUWV3NY3DTQEVFL4NAT4AQH3ZLLFLA5",
+              "amount": "0.002"
+            }
+          ]
+        }
+      },
+      "expect": { "verdict": "wrong_asset" }
+    },
+    {
+      "id": "verify-insufficient-amount",
+      "description": "A payment below the price is insufficient_amount.",
+      "input": {
+        "requirement": {
+          "network": "stellar:testnet",
+          "asset": "XLM",
+          "amount": "0.002",
+          "pay_to": "GD4RJ43KGBZ3FNV4LCWZGYNPJQZPITK37QJYRCTF62LPY5S4LRETDAZW",
+          "nonce": "90aa9a441c48f8a68be1686f3ff7da1184bf7eaf9f721a0c0b675a0a33109225",
+          "expires": 1789431692
+        },
+        "proof": {
+          "tx": "d2fbddbda7e4236db8f0b85855c0fcc81f6c215dbe594f8bf6736341c032400d",
+          "nonce": "90aa9a441c48f8a68be1686f3ff7da1184bf7eaf9f721a0c0b675a0a33109225"
+        },
+        "now": 1789431600,
+        "nonce_record": { "used": false, "expires": 1789431692 },
+        "transaction": {
+          "found": true,
+          "successful": true,
+          "memo_type": "hash",
+          "memo": "rp+GgADAxVnuKspQ3iiwB51DnwPyYI19dwZT+0i+1cw=",
+          "operations": [
+            {
+              "type": "payment",
+              "destination": "GD4RJ43KGBZ3FNV4LCWZGYNPJQZPITK37QJYRCTF62LPY5S4LRETDAZW",
+              "asset": "XLM",
+              "amount": "0.001"
+            }
+          ]
+        }
+      },
+      "expect": { "verdict": "insufficient_amount" }
+    }
+  ]
+}

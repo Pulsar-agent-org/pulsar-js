@@ -1,0 +1,123 @@
+{
+  "spec_version": "0.1.0",
+  "kind": "header-parse",
+  "vectors": [
+    {
+      "id": "parse-challenge-reordered-and-spaced",
+      "description": "Parameters in a non-canonical order with extra whitespace still parse.",
+      "input": {
+        "type": "challenge",
+        "header": "Pulsar   expires=\"1789431692\",nonce=\"90aa9a441c48f8a68be1686f3ff7da1184bf7eaf9f721a0c0b675a0a33109225\" ,  amount=\"0.002\", pay_to=\"GD4RJ43KGBZ3FNV4LCWZGYNPJQZPITK37QJYRCTF62LPY5S4LRETDAZW\", asset=\"XLM\", network=\"stellar:testnet\""
+      },
+      "expect": {
+        "ok": true,
+        "params": {
+          "network": "stellar:testnet",
+          "asset": "XLM",
+          "amount": "0.002",
+          "pay_to": "GD4RJ43KGBZ3FNV4LCWZGYNPJQZPITK37QJYRCTF62LPY5S4LRETDAZW",
+          "nonce": "90aa9a441c48f8a68be1686f3ff7da1184bf7eaf9f721a0c0b675a0a33109225",
+          "expires": "1789431692"
+        }
+      }
+    },
+    {
+      "id": "parse-challenge-with-error",
+      "description": "A re-challenge with an error parameter parses.",
+      "input": {
+        "type": "challenge",
+        "header": "Pulsar network=\"stellar:testnet\", asset=\"XLM\", amount=\"0.002\", pay_to=\"GD4RJ43KGBZ3FNV4LCWZGYNPJQZPITK37QJYRCTF62LPY5S4LRETDAZW\", nonce=\"90aa9a441c48f8a68be1686f3ff7da1184bf7eaf9f721a0c0b675a0a33109225\", expires=\"1789431692\", error=\"insufficient_amount\""
+      },
+      "expect": {
+        "ok": true,
+        "params": {
+          "network": "stellar:testnet",
+          "asset": "XLM",
+          "amount": "0.002",
+          "pay_to": "GD4RJ43KGBZ3FNV4LCWZGYNPJQZPITK37QJYRCTF62LPY5S4LRETDAZW",
+          "nonce": "90aa9a441c48f8a68be1686f3ff7da1184bf7eaf9f721a0c0b675a0a33109225",
+          "expires": "1789431692",
+          "error": "insufficient_amount"
+        }
+      }
+    },
+    {
+      "id": "parse-credentials",
+      "description": "A well-formed proof header parses.",
+      "input": {
+        "type": "credentials",
+        "header": "Pulsar tx=\"d2fbddbda7e4236db8f0b85855c0fcc81f6c215dbe594f8bf6736341c032400d\", nonce=\"90aa9a441c48f8a68be1686f3ff7da1184bf7eaf9f721a0c0b675a0a33109225\""
+      },
+      "expect": {
+        "ok": true,
+        "params": {
+          "tx": "d2fbddbda7e4236db8f0b85855c0fcc81f6c215dbe594f8bf6736341c032400d",
+          "nonce": "90aa9a441c48f8a68be1686f3ff7da1184bf7eaf9f721a0c0b675a0a33109225"
+        }
+      }
+    },
+    {
+      "id": "parse-reject-uppercase-nonce",
+      "description": "Uppercase hexadecimal in a nonce is malformed.",
+      "input": {
+        "type": "challenge",
+        "header": "Pulsar network=\"stellar:testnet\", asset=\"XLM\", amount=\"0.002\", pay_to=\"GD4RJ43KGBZ3FNV4LCWZGYNPJQZPITK37QJYRCTF62LPY5S4LRETDAZW\", nonce=\"90AA9A441C48F8A68BE1686F3FF7DA1184BF7EAF9F721A0C0B675A0A33109225\", expires=\"1789431692\""
+      },
+      "expect": { "ok": false, "error": "malformed_request" }
+    },
+    {
+      "id": "parse-reject-missing-pay-to",
+      "description": "A challenge missing a required parameter is malformed.",
+      "input": {
+        "type": "challenge",
+        "header": "Pulsar network=\"stellar:testnet\", asset=\"XLM\", amount=\"0.002\", nonce=\"90aa9a441c48f8a68be1686f3ff7da1184bf7eaf9f721a0c0b675a0a33109225\", expires=\"1789431692\""
+      },
+      "expect": { "ok": false, "error": "malformed_request" }
+    },
+    {
+      "id": "parse-reject-duplicate-amount",
+      "description": "A repeated parameter is malformed.",
+      "input": {
+        "type": "challenge",
+        "header": "Pulsar network=\"stellar:testnet\", asset=\"XLM\", amount=\"0.002\", amount=\"0.003\", pay_to=\"GD4RJ43KGBZ3FNV4LCWZGYNPJQZPITK37QJYRCTF62LPY5S4LRETDAZW\", nonce=\"90aa9a441c48f8a68be1686f3ff7da1184bf7eaf9f721a0c0b675a0a33109225\", expires=\"1789431692\""
+      },
+      "expect": { "ok": false, "error": "malformed_request" }
+    },
+    {
+      "id": "parse-reject-unknown-param",
+      "description": "An unknown parameter is malformed.",
+      "input": {
+        "type": "challenge",
+        "header": "Pulsar network=\"stellar:testnet\", asset=\"XLM\", amount=\"0.002\", pay_to=\"GD4RJ43KGBZ3FNV4LCWZGYNPJQZPITK37QJYRCTF62LPY5S4LRETDAZW\", nonce=\"90aa9a441c48f8a68be1686f3ff7da1184bf7eaf9f721a0c0b675a0a33109225\", expires=\"1789431692\", foo=\"bar\""
+      },
+      "expect": { "ok": false, "error": "malformed_request" }
+    },
+    {
+      "id": "parse-reject-amount-too-precise",
+      "description": "More than seven fractional digits is malformed.",
+      "input": {
+        "type": "challenge",
+        "header": "Pulsar network=\"stellar:testnet\", asset=\"XLM\", amount=\"0.00200001\", pay_to=\"GD4RJ43KGBZ3FNV4LCWZGYNPJQZPITK37QJYRCTF62LPY5S4LRETDAZW\", nonce=\"90aa9a441c48f8a68be1686f3ff7da1184bf7eaf9f721a0c0b675a0a33109225\", expires=\"1789431692\""
+      },
+      "expect": { "ok": false, "error": "malformed_request" }
+    },
+    {
+      "id": "parse-reject-wrong-scheme",
+      "description": "A non-Pulsar auth scheme is malformed for this parser.",
+      "input": {
+        "type": "credentials",
+        "header": "Basic dXNlcjpwYXNz"
+      },
+      "expect": { "ok": false, "error": "malformed_request" }
+    },
+    {
+      "id": "parse-reject-credentials-missing-tx",
+      "description": "A proof missing tx is malformed.",
+      "input": {
+        "type": "credentials",
+        "header": "Pulsar nonce=\"90aa9a441c48f8a68be1686f3ff7da1184bf7eaf9f721a0c0b675a0a33109225\""
+      },
+      "expect": { "ok": false, "error": "malformed_request" }
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "name": "pulsar-js",
+  "version": "0.1.0-rc.1",
+  "private": true,
+  "description": "TypeScript implementation of the Pulsar pay-per-call protocol",
+  "license": "Apache-2.0",
+  "type": "module",
+  "packageManager": "pnpm@9.12.0",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "build": "pnpm -r --filter \"./packages/*\" build",
+    "test": "pnpm -r --filter \"./packages/*\" test",
+    "typecheck": "pnpm -r exec tsc --noEmit",
+    "lint": "prettier --check \"**/*.{ts,json,md}\"",
+    "format": "prettier --write \"**/*.{ts,json,md}\""
+  },
+  "devDependencies": {
+    "@types/node": "^20.14.0",
+    "prettier": "^3.3.0",
+    "tsup": "^8.2.0",
+    "typescript": "^5.5.0",
+    "vitest": "^2.0.0"
+  }
+}

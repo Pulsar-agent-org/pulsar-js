@@ -1,0 +1,76 @@
+{
+  "spec_version": "0.1.0",
+  "kind": "nonce-validate",
+  "vectors": [
+    {
+      "id": "nonce-valid",
+      "description": "A known, unused, unexpired nonce is valid.",
+      "input": {
+        "nonce": "90aa9a441c48f8a68be1686f3ff7da1184bf7eaf9f721a0c0b675a0a33109225",
+        "now": 1789431600,
+        "record": { "used": false, "expires": 1789431692 }
+      },
+      "expect": { "verdict": "valid" }
+    },
+    {
+      "id": "nonce-unknown",
+      "description": "A nonce with no stored record is unknown.",
+      "input": {
+        "nonce": "90aa9a441c48f8a68be1686f3ff7da1184bf7eaf9f721a0c0b675a0a33109225",
+        "now": 1789431600,
+        "record": null
+      },
+      "expect": { "verdict": "unknown_nonce" }
+    },
+    {
+      "id": "nonce-used",
+      "description": "A consumed nonce fails as used.",
+      "input": {
+        "nonce": "90aa9a441c48f8a68be1686f3ff7da1184bf7eaf9f721a0c0b675a0a33109225",
+        "now": 1789431600,
+        "record": { "used": true, "expires": 1789431692 }
+      },
+      "expect": { "verdict": "nonce_used" }
+    },
+    {
+      "id": "nonce-expired",
+      "description": "Past expiry plus the five-second grace, the nonce is expired.",
+      "input": {
+        "nonce": "90aa9a441c48f8a68be1686f3ff7da1184bf7eaf9f721a0c0b675a0a33109225",
+        "now": 1789431700,
+        "record": { "used": false, "expires": 1789431692 }
+      },
+      "expect": { "verdict": "nonce_expired" }
+    },
+    {
+      "id": "nonce-within-skew-grace",
+      "description": "Within the five-second grace, a just-expired nonce still validates.",
+      "input": {
+        "nonce": "90aa9a441c48f8a68be1686f3ff7da1184bf7eaf9f721a0c0b675a0a33109225",
+        "now": 1789431695,
+        "record": { "used": false, "expires": 1789431692 }
+      },
+      "expect": { "verdict": "valid" }
+    },
+    {
+      "id": "nonce-malformed-uppercase",
+      "description": "An uppercase-hex nonce is malformed before any store lookup.",
+      "input": {
+        "nonce": "90AA9A441C48F8A68BE1686F3FF7DA1184BF7EAF9F721A0C0B675A0A33109225",
+        "now": 1789431600,
+        "record": { "used": false, "expires": 1789431692 }
+      },
+      "expect": { "verdict": "malformed_request" }
+    },
+    {
+      "id": "nonce-malformed-too-short",
+      "description": "Fewer than sixteen bytes of entropy is malformed.",
+      "input": {
+        "nonce": "90aa9a441c48f8a6",
+        "now": 1789431600,
+        "record": null
+      },
+      "expect": { "verdict": "malformed_request" }
+    }
+  ]
+}
